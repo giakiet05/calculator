@@ -44,8 +44,9 @@ const app = (function () {
                                 this.changeInput();
                                 break;
                             case '=':
-                                if (inputValues.length === 3) {
-
+                                if (inputValues.length === 2) {
+                                    inputValues[2] = operand;
+                                    console.log(inputValues);
                                     let ans = String(this.calculate(inputValues));
                                     screen.value = ans;
                                     inputValues = [];
@@ -54,43 +55,40 @@ const app = (function () {
                                 } else {
                                     break;
                                 }
-                                break;
-                            // case 'DEL':
-                            //     let deletedChar = screen.value[screen.value.length - 1];
-                            //     screen.value = screen.value.slice(0, -1)
 
-                            //     let length = screen.value.length;
-                            //     if (screen.value[length - 1] === '+' || screen.value[length - 1] === '-' || screen.value[length - 1] === '*' || screen.value[length - 1] === '/') {
-                            //         inputValues.pop();
+                            case 'DEL':
+                                let deletedChar = screen.value[screen.value.length - 1];
+                                screen.value = screen.value.slice(0, -1)
+                                operand = operand.slice(0, -1);
+                                console.log(operand);
+                                let length = screen.value.length;
 
-                            //         console.log(inputValues);
-                            //     } else if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
-                            //         inputValues.pop();
-                            //         console.log(inputValues);
-                            //     } else if (screen.value == '') {
-                            //         inputValues.pop();
-                            //         console.log(inputValues);
+                                if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
 
-                            //     } break;
+                                    operand = screen.value;
+                                    inputValues.splice(0);
+                                    console.log(inputValues, operand);
+                                } else if (screen.value == '') {
+                                    inputValues.pop();
+                                    console.log(inputValues, operand);
+
+                                } break;
                         }
                     }
 
                     else if (pressedBtn === '+' || pressedBtn === '-' || pressedBtn === '*' || pressedBtn === '/' || pressedBtn === '%' || pressedBtn === '^') {
-                        if (operand != '' && inputValues.length === 0) { //Xu li khi da co toan hang dau tien va chua co toan tu trong mang
+                        if (operand != '' && inputValues.length <= 1) { //Xu li khi da co toan hang dau tien va chua co toan tu trong mang
                             inputValues.push(operand, pressedBtn);
                             operand = '';
                             this.changeInput();
-                            inputValues.push(''); //Tạo thêm 1 phần tử rỗng cho js để thêm vào không bị lỗi
+                            console.log('clear operand')
+                            console.log(inputValues);
                         }
                     }
                     else {
-
                         operand += pressedBtn;
                         screen.value += pressedBtn;
-                        if (inputValues.length === 3) {
-                            inputValues[2] = operand;
-                        }
-
+                        console.log(operand)
                     }
 
                 }
@@ -101,15 +99,18 @@ const app = (function () {
 
             operand1 = Number(inputValues[0]);
             operator = inputValues[1];
-            operand2 = Number(inputValues[2]);
+            operand2 = inputValues[2];
 
+            if (operand2 === '') return 'Syntax Error!'; //Kiểm tra xem toán hạng 2 có phải là rỗng không
+
+            operand2 = Number(operand2);
             switch (operator) {
                 case '+': return operand1 + operand2; break;
                 case '-': return operand1 - operand2; break;
                 case '*': return operand1 * operand2; break;
                 case '/':
                     if (operand2 === 0) {
-                        return 'Error!'
+                        return 'Math Error!'
                     } else {
                         let ans = operand1 / operand2;
                         return ans;
@@ -131,4 +132,5 @@ const app = (function () {
 })()
 
 app.init();
+console.log(Number(''))
 
