@@ -9,13 +9,13 @@ const app = (function () {
     let operand = '';
     let deletedValue = '';
 
-buttons.forEach(btn => {
-    if(btn.innerText === 'DEL' || btn.innerText === 'AC') {
-        btn.style.backgroundColor = 'blue';
-        btn.style.color = 'white';
+    buttons.forEach(btn => {
+        if (btn.innerText === 'DEL' || btn.innerText === 'AC') {
+            btn.style.backgroundColor = 'blue';
+            btn.style.color = 'white';
 
-    }
-})
+        }
+    })
 
 
     return {
@@ -75,7 +75,7 @@ buttons.forEach(btn => {
                         }
                     }
 
-                    else if (pressedBtn === '+' || pressedBtn === '-' || pressedBtn === '*' || pressedBtn === '/' || pressedBtn === '%' ||pressedBtn === '^') {
+                    else if (pressedBtn === '+' || pressedBtn === '-' || pressedBtn === '*' || pressedBtn === '/' || pressedBtn === '%' || pressedBtn === '^') {
                         if (operand != '' && inputValues.length === 0) { //Xu li khi da co toan hang dau tien va chua co toan tu trong mang
                             inputValues.push(operand, pressedBtn);
                             operand = '';
@@ -112,7 +112,7 @@ buttons.forEach(btn => {
                         return 'Error!'
                     } else {
                         let ans = operand1 / operand2;
-                        return ans.toFixed(3);
+                        return ans;
 
                     }
                     break;
