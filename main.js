@@ -13,7 +13,6 @@ const app = (function () {
         if (btn.innerText === 'DEL' || btn.innerText === 'AC') {
             btn.style.backgroundColor = 'blue';
             btn.style.color = 'white';
-
         }
     })
 
@@ -23,7 +22,6 @@ const app = (function () {
         changeInput() {
             screen.value = inputValues.join('');
         },
-
 
         handleBtn() {
             buttons.forEach(btn => {
@@ -46,7 +44,7 @@ const app = (function () {
                             case '=':
                                 if (inputValues.length === 2) {
                                     inputValues[2] = operand;
-                                    console.log(inputValues);
+
                                     let ans = String(this.calculate(inputValues));
                                     screen.value = ans;
                                     inputValues = [];
@@ -60,17 +58,17 @@ const app = (function () {
                                 let deletedChar = screen.value[screen.value.length - 1];
                                 screen.value = screen.value.slice(0, -1)
                                 operand = operand.slice(0, -1);
-                                console.log(operand);
+
                                 let length = screen.value.length;
 
                                 if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
 
                                     operand = screen.value;
                                     inputValues.splice(0);
-                                    console.log(inputValues, operand);
+
                                 } else if (screen.value == '') {
                                     inputValues.pop();
-                                    console.log(inputValues, operand);
+
 
                                 } break;
                         }
@@ -81,20 +79,16 @@ const app = (function () {
                             inputValues.push(operand, pressedBtn);
                             operand = '';
                             this.changeInput();
-                            console.log('clear operand')
-                            console.log(inputValues);
                         }
                     }
                     else {
                         operand += pressedBtn;
                         screen.value += pressedBtn;
-                        console.log(operand)
                     }
-
                 }
-
             })
         },
+
         calculate(inputValues) {
 
             operand1 = Number(inputValues[0]);
@@ -132,5 +126,5 @@ const app = (function () {
 })()
 
 app.init();
-console.log(Number(''))
+
 
