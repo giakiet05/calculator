@@ -7,7 +7,7 @@ const app = (function () {
     const buttons = $$('.buttons .btn');
     let inputValues = [];
     let operand = '';
-    let deletedValue = '';
+ let errors = ['Syntax Error!', 'Math Error!'];
 
     buttons.forEach(btn => {
         if (btn.innerText === 'DEL' || btn.innerText === 'AC') {
@@ -30,7 +30,7 @@ const app = (function () {
                     if (pressedBtn === '=' || pressedBtn === 'AC' || pressedBtn === 'DEL' || pressedBtn === '.') {
                         switch (pressedBtn) {
                             case '.':
-                                if (!operand.includes(pressedBtn)) {
+                                if (!operand.includes(pressedBtn) && !errors.includes(screen.value)) {
                                     operand += pressedBtn;
                                     screen.value += pressedBtn;
                                 }
@@ -55,35 +55,41 @@ const app = (function () {
                                 }
 
                             case 'DEL':
-                                let deletedChar = screen.value[screen.value.length - 1];
-                                screen.value = screen.value.slice(0, -1)
-                                operand = operand.slice(0, -1);
-
-                                let length = screen.value.length;
-
-                                if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
-
-                                    operand = screen.value;
-                                    inputValues.splice(0);
-
-                                } else if (screen.value == '') {
-                                    inputValues.pop();
-
-
-                                } break;
+                                if(!errors.includes(screen.value)) {
+                                    let deletedChar = screen.value[screen.value.length - 1];
+                                    screen.value = screen.value.slice(0, -1)
+                                    operand = operand.slice(0, -1);
+    
+                                    let length = screen.value.length;
+    
+                                    if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
+    
+                                        operand = screen.value;
+                                        inputValues.splice(0);
+    
+                                    } else if (screen.value == '') {
+                                        inputValues.pop();
+    
+    
+                                    }
+                                }
+                              break;
                         }
                     }
 
                     else if (pressedBtn === '+' || pressedBtn === '-' || pressedBtn === '*' || pressedBtn === '/' || pressedBtn === '%' || pressedBtn === '^') {
-                        if (operand != '' && inputValues.length <= 1) { //Xu li khi da co toan hang dau tien va chua co toan tu trong mang
+                        if (operand != '' && inputValues.length <= 1 && !errors.includes(screen.value)) { //Xu li khi da co toan hang dau tien va chua co toan tu trong mang
                             inputValues.push(operand, pressedBtn);
                             operand = '';
                             this.changeInput();
                         }
                     }
                     else {
-                        operand += pressedBtn;
-                        screen.value += pressedBtn;
+                        if( !errors.includes(screen.value)) {
+                            operand += pressedBtn;
+                            screen.value += pressedBtn;
+
+                        }
                     }
                 }
             })
