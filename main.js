@@ -7,7 +7,7 @@ const app = (function () {
     const buttons = $$('.buttons .btn');
     let inputValues = [];
     let operand = '';
- let errors = ['Syntax Error!', 'Math Error!'];
+    let errors = ['Syntax Error!', 'Math Error!'];
 
     buttons.forEach(btn => {
         if (btn.innerText === 'DEL' || btn.innerText === 'AC') {
@@ -18,7 +18,6 @@ const app = (function () {
 
 
     return {
-
         changeInput() {
             screen.value = inputValues.join('');
         },
@@ -39,7 +38,7 @@ const app = (function () {
                             case 'AC':
                                 inputValues = [];
                                 operand = ''
-                                this.changeInput();
+                              this.changeInput();
                                 break;
                             case '=':
                                 if (inputValues.length === 2) {
@@ -47,6 +46,7 @@ const app = (function () {
 
                                     let ans = String(this.calculate(inputValues));
                                     screen.value = ans;
+                                    console.log(inputValues);
                                     inputValues = [];
                                     operand = ans;
                                     break;
@@ -55,25 +55,22 @@ const app = (function () {
                                 }
 
                             case 'DEL':
-                                if(!errors.includes(screen.value)) {
+                                if (!errors.includes(screen.value)) {
                                     let deletedChar = screen.value[screen.value.length - 1];
                                     screen.value = screen.value.slice(0, -1)
                                     operand = operand.slice(0, -1);
-    
-                                    let length = screen.value.length;
-    
+
                                     if (deletedChar === '+' || deletedChar === '-' || deletedChar === '/' || deletedChar === '*') {
-    
+
                                         operand = screen.value;
                                         inputValues.splice(0);
-    
-                                    } else if (screen.value == '') {
+
+                                    } else if (screen.value === '') {
                                         inputValues.pop();
-    
-    
+
                                     }
                                 }
-                              break;
+                                break;
                         }
                     }
 
@@ -85,7 +82,7 @@ const app = (function () {
                         }
                     }
                     else {
-                        if( !errors.includes(screen.value)) {
+                        if (!errors.includes(screen.value)) {
                             operand += pressedBtn;
                             screen.value += pressedBtn;
 
@@ -95,19 +92,17 @@ const app = (function () {
             })
         },
 
-        calculate(inputValues) {
-
-            operand1 = Number(inputValues[0]);
-            operator = inputValues[1];
-            operand2 = inputValues[2];
-
+        calculate([operand1, operator, operand2]) {
             if (operand2 === '') return 'Syntax Error!'; //Kiểm tra xem toán hạng 2 có phải là rỗng không
-
+            if (operand1 === '.' || operand2 === '.') return 'Math Error!';
+            operand1 = Number(operand1);
             operand2 = Number(operand2);
             switch (operator) {
                 case '+': return operand1 + operand2; break;
                 case '-': return operand1 - operand2; break;
                 case '*': return operand1 * operand2; break;
+                case '%': return operand1 % operand2; break;
+                case '^': return operand1 ** operand2; break;
                 case '/':
                     if (operand2 === 0) {
                         return 'Math Error!'
@@ -117,8 +112,7 @@ const app = (function () {
 
                     }
                     break;
-                case '%': return operand1 % operand2; break;
-                case '^': return operand1 ** operand2; break;
+               
             }
         },
 
